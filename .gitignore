@@ -1,5 +1,5 @@
-/src/data/
-/src/data.json
 /dist/
 /package-lock.json
+/src/data.json
+/src/data/
 node_modules/

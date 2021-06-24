@@ -1,0 +1,32 @@
+name: Fetch, build, and upload data
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'
+  repository_dispatch:
+    types: [wf-data]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - name: Set up Backblaze B2 CLI
+        uses: wilsonzlin/setup-b2@v3
+
+      - name: Install npm dependencies
+        run: npm i
+
+      - name: Fetch and build data
+        run: npm run build-data
+
+      - name: Upload data
+        run: |
+          b2 authorize-account ${{ secrets.DATA_B2_KEY_ID }} ${{ secrets.DATA_B2_APPLICATION_KEY }}
+          b2 upload-file ${{ secrets.DATA_B2_BUCKET_NAME }} ./src/data.json node-geoip-country/data.json

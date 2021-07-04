@@ -1,13 +1,13 @@
-import { IpPrefixTrie, IpPrefixTrieNode } from "./trie";
+import { IpPrefixTrieNode, trieCheck } from "./trie";
 
 export class NodeGeoipCountryClient {
-  private readonly trie: IpPrefixTrie;
+  private readonly trie: IpPrefixTrieNode;
 
   constructor(data: IpPrefixTrieNode) {
-    this.trie = new IpPrefixTrie(data);
+    this.trie = data;
   }
 
   lookUp(ip: string): string | undefined {
-    return this.trie.check(ip);
+    return trieCheck(this.trie, ip);
   }
 }

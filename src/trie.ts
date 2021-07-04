@@ -10,40 +10,43 @@ const getIpAddrBits = (addr: string) =>
       )
     );
 
-export class IpPrefixTrie {
-  constructor(readonly root: IpPrefixTrieNode = []) {}
-
-  add(cidr: string, country: string) {
-    if (!/^(\d{1,3}\.){3}\d{1,3}\/\d{1,2}$/.test(cidr)) {
-      throw new SyntaxError(`Invalid CIDR: ${cidr}`);
-    }
-    const [addr, len] = cidr.split("/");
-    const binStr = getIpAddrBits(addr).slice(0, +len);
-    let cur = this.root;
-    for (const bit of binStr) {
-      cur = cur[bit] ??= [];
-    }
-    if (cur[2] !== undefined && cur[2] !== country) {
-      console.warn(
-        `Conflict for ${cidr}: ${cur[2]} will be replaced with ${country}`
-      );
-    }
-    cur[2] = country;
+export const trieAdd = (
+  root: IpPrefixTrieNode,
+  cidr: string,
+  country: string
+) => {
+  if (!/^(\d{1,3}\.){3}\d{1,3}\/\d{1,2}$/.test(cidr)) {
+    throw new SyntaxError(`Invalid CIDR: ${cidr}`);
   }
-
-  check(ip: string): string | undefined {
-    const bits = getIpAddrBits(ip);
-    let m: string | undefined = undefined;
-    let cur: IpPrefixTrieNode | undefined = this.root;
-    for (const bit of bits) {
-      cur = cur[bit] as IpPrefixTrieNode | undefined;
-      if (!cur) {
-        break;
-      }
-      if (cur[2] != undefined) {
-        m = cur[2];
-      }
-    }
-    return m;
+  const [addr, len] = cidr.split("/");
+  const binStr = getIpAddrBits(addr).slice(0, +len);
+  let cur = root;
+  for (const bit of binStr) {
+    cur = cur[bit] ??= [];
   }
-}
+  if (cur[2] !== undefined && cur[2] !== country) {
+    console.warn(
+      `Conflict for ${cidr}: ${cur[2]} will be replaced with ${country}`
+    );
+  }
+  cur[2] = country;
+};
+
+export const trieCheck = (
+  root: IpPrefixTrieNode,
+  ip: string
+): string | undefined => {
+  const bits = getIpAddrBits(ip);
+  let m: string | undefined = undefined;
+  let cur: IpPrefixTrieNode | undefined = root;
+  for (const bit of bits) {
+    cur = cur[bit] as IpPrefixTrieNode | undefined;
+    if (!cur) {
+      break;
+    }
+    if (cur[2] != undefined) {
+      m = cur[2];
+    }
+  }
+  return m;
+};

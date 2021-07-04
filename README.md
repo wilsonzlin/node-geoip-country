@@ -31,4 +31,6 @@ To build or use custom data, the structure should match the `IpPrefixTrieNode` t
 export type IpPrefixTrieNode = [IpPrefixTrieNode?, IpPrefixTrieNode?, string?];
 ```
 
-It's a bit string trie data structure, represented as a JSON-compact array, where the first element represents any '0' child, the second represents any '1' child, and the third represents the node's value (i.e. country) if available.
+It's a bit string trie data structure, represented as a JSON-compact array, where the first element represents any `0` child, the second represents any `1` child, and the third represents the node's value (i.e. country) if available.
+
+During lookup, an IPv4 address is converted to a 32-digit bit string and the longest match is used as the result.

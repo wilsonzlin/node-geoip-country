@@ -1,5 +1,6 @@
 {
   "name": "node-geoip-country",
+  "description": "Find the country associated with an IPv4 address",
   "version": "0.0.1",
   "main": "dist/client.js",
   "files": [

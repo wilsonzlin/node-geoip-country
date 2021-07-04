@@ -23,7 +23,7 @@ const countryIso2Code = client.lookUp("8.8.8.8");
 
 The data is built and stored separately from the library, to avoid tying library and data versions and allow different datasets.
 
-This repo will generate data and upload it to https://wilsonl.in/node-geoip-country/data.json every hour. To use it, simply fetch and parse as JSON, then provide to the client constructor.
+This repo will generate data based on [herrbischoff/country-ip-blocks](https://github.com/herrbischoff/country-ip-blocks) and upload it to https://wilsonl.in/node-geoip-country/data.json every hour. To use it, simply fetch and parse as JSON, then provide to the client constructor.
 
 To build or use custom data, the structure should match the `IpPrefixTrieNode` type:
 

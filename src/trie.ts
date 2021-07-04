@@ -24,7 +24,7 @@ export const trieAdd = (
   for (const bit of binStr) {
     cur = cur[bit] ??= [];
   }
-  if (cur[2] !== undefined && cur[2] !== country) {
+  if (cur[2] != undefined && cur[2] !== country) {
     console.warn(
       `Conflict for ${cidr}: ${cur[2]} will be replaced with ${country}`
     );
@@ -40,7 +40,7 @@ export const trieCheck = (
   let m: string | undefined = undefined;
   let cur: IpPrefixTrieNode | undefined = root;
   for (const bit of bits) {
-    cur = cur[bit] as IpPrefixTrieNode | undefined;
+    cur = cur[bit];
     if (!cur) {
       break;
     }
